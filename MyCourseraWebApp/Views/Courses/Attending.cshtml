@@ -1,0 +1,36 @@
+﻿@model MyCourseraWebApp.ViewModel.ViewUserCoursesViewModel
+
+@{ 
+    ViewBag.Title = "Course I'm Attending";
+    ViewBag.Summary = "These are the courses I am attending or willing to attend";
+}
+
+
+@section HeaderContent
+{
+    <div class="courses-page-attending-search-main-container">
+        @{
+            Html.RenderPartial("CoursesSearchControl", Model);
+        }
+    </div>
+}
+
+<div class="container-fluid user-courses-main-container courses-page-items courses-page-attending-items">
+    @{
+        Html.RenderPartial("UserCourses", Model);
+    }
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            coursesController.searchConrolsMainContainerSelector = ".courses-page-attending-search-main-container";
+            coursesController.bindingMode = 2;
+            coursesController.bindPagerButtons();
+            coursesController.bindAttendActionButtons();
+            coursesController.bindUnAttendActionButtons();
+            coursesController.bindSearchControls();
+        });
+    </script>
+}

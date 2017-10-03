@@ -1,0 +1,14 @@
+﻿@model MyCourseraWebApp.ViewModel.ViewUserCoursesViewModel
+
+<div class="row courses-search-main-container">
+    <input type="hidden" value="" data-user-courses-search-hidden />
+
+    <div id="seachControl" class="input-group">
+        <input type="text" class="form-control search" value="@Model.SearchTerm" placeholder="Search Courses" data-user-courses-search-text>
+        <span class="input-group-btn search">
+            <button class="btn btn-default" type="button" data-user-courses-search-btn>
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            </button>
+        </span>
+    </div>
+</div>

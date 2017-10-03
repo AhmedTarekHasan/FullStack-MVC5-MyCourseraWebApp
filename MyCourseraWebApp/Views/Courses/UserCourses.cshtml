@@ -1,0 +1,35 @@
+﻿@using MyCourseraWebApp.Helpers
+@model MyCourseraWebApp.ViewModel.ViewUserCoursesViewModel
+
+@if (Model.Courses.Count > 0)
+{
+    <div id="userCoursesPager" class="row">
+        <div class="col-md-12">
+            @{
+                Html.RenderPartial("PagerControl", Model.PagerToken);
+            }
+        </div>
+    </div>
+
+    foreach (var userCourse in Model.Courses)
+    {
+        <div class="row course-item @((Model.Courses.IndexOf(userCourse) % 2 == 0) ? "even" : "odd" ) ">
+            @{
+                Html.RenderPartial("UserCourseItem", userCourse);
+            }
+        </div>
+    }
+
+    <div id="userCoursesPager" class="row">
+        <div class="col-md-12">
+            @{
+                Html.RenderPartial("PagerControl", Model.PagerToken);
+            }
+        </div>
+    </div>
+}
+else
+{
+    <h3><span class="label label-warning">No courses found</span></h3>
+}
+

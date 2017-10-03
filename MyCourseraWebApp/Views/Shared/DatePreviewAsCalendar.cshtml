@@ -1,0 +1,8 @@
+﻿@model DateTime
+
+<div class="calendar-date">
+    <span class="binds"></span>
+    <span class="month">@Model.ToString("MMM").ToUpper()</span>
+    <h1 class="day">@Model.ToString(" dd")</h1>
+    <span class="year badge">@Model.ToString("yyyy")</span>
+</div>

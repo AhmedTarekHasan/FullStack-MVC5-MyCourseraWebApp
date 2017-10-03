@@ -1,0 +1,82 @@
+﻿@using MyCourseraWebApp.Helpers
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/jqueryui")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <script type="text/javascript">
+        var ContextHelpers = function () {
+            var defaultPageSize = @ContextHelpers.DefaultPageSize;
+            var defaultPagerWidth = @ContextHelpers.DefaultPagerWidth;
+
+            return {
+                defaultPageSize: defaultPageSize,
+                defaultPagerWidth: defaultPagerWidth
+            };
+        }();
+    </script>
+
+    <header class="container-fluid">
+        <nav class="navbar navbar-inverse navbar-fixed-top cbp-af-header">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("Courses", "Index", "Courses")</li>
+                    </ul>
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="jumbotron container-fluid courses-page-title courses-page-attending-title">
+                <div class="row">
+                    <h1>@ViewBag.Title</h1>
+                    <p>@ViewBag.Summary</p>
+                </div>
+                <div class="row courses-search-main-container">
+                    @RenderSection("HeaderContent", false)
+                </div>
+            </div>
+        </div>
+        <div class="row main-body-container">
+            @RenderBody()
+        </div>
+    </div>
+    <footer class="container-fluid">
+        <p></p>
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/knockout")
+    @Scripts.Render("~/bundles/bootbox")
+    @Scripts.Render("~/bundles/clientSideValidators")
+    <script src="~/signalr/hubs"></script>
+    @Scripts.Render("~/bundles/services")
+    @Scripts.Render("~/bundles/controllers")
+    @Scripts.Render("~/bundles/app")
+    @Scripts.Render("~/bundles/animatedHeader")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

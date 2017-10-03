@@ -1,0 +1,64 @@
+﻿@using Microsoft.AspNet.Identity
+@using MyCourseraWebApp.Helpers
+
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@ContextHelpers.CurrentLoggedInUser.FullName <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="@Url.Action("Attending", "Courses", routeValues: null)">Courses I'm Attending</a></li>
+
+                    @if (ContextHelpers.CurrentLoggedInUser.UserTypeId == 3)
+                    {
+                        <li><a href="@Url.Action("Instructing", "Courses", routeValues: null)">Courses I'm Instructing</a></li>
+                    }
+
+                    @if (ContextHelpers.CurrentLoggedInUser.UserTypeId == 3)
+                    {
+                        <li><a href="@Url.Action("Create", "Courses", routeValues: null)">Create Course</a></li>
+                    }
+                    @*<li role="separator" class="divider"></li>*@
+                    <li><a href="@Url.Action("Index", "Manage", routeValues: null)">Manage Profile</a></li>
+                    <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                </ul>
+            </li>
+            <li id="notification_li">
+                <span class="badge" id="notification_count" data-bind="html: notificationsCount, visible: notificationsCount() > 0"></span>
+                <a href="#" id="notificationLink">
+                    <span class="glyphicon glyphicon-bell notification-icon" aria-hidden="true"></span>
+                </a>
+                <div id="notificationContainer">
+                    <div id="notificationTitle">Notifications</div>
+                    <div id="notificationsBody" class="notifications" data-bind="foreach: { data: allNotifications, as: 'notification' }">
+                        <div class="row notification-item" data-bind="css: { 'not-seen': !notification.isSeen(), seen: notification.isSeen() }">
+                            <div class="col-md-10 col-sm-10 col-xs-10">
+                                <div data-bind="html: notification.html">
+
+                                </div>
+                                <span class="badge notification-datetime" data-bind="html: notification.whenFormatted"></span>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-2 action-buttons">
+                                <span class="glyphicon glyphicon-eye-close not-seen" data-bind="visible: !notification.isSeen(), click: $root.markAsSeen"></span>
+                                <span class="glyphicon glyphicon-eye-open seen" data-bind="visible: notification.isSeen(), click: $root.markAsUnSeen"></span>
+                                <span class="glyphicon glyphicon-remove dismiss" data-bind="click: $root.markAsDismissed"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="notificationFooter"></div>
+                </div>
+            </li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}

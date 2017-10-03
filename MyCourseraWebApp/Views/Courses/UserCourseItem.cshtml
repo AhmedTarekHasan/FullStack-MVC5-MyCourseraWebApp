@@ -1,0 +1,139 @@
+﻿@model MyCourseraWebApp.DTOs.UserCourseDto
+
+@{ 
+    var courseHasEnded = (Model.To.Date <= DateTime.Today);
+}
+
+<div class="container-fluid row user-courses-row">
+    <article>
+        <div class="row course-title">
+            <div class="col-sm-12">
+                <span>
+                    <a href="@Url.Action("View", "Courses", new { id = Model.CourseId })">
+                        @Model.Title
+                    </a>
+                </span>
+            </div>
+        </div>
+        <div class="row course-description">
+            <div class="col-sm-12">
+                <span>
+                    @Model.Description
+                </span>
+            </div>
+        </div>
+        <div class="row course-dates">
+            <div class="col-sm-6">
+                Starts
+                <span class="badge @((DateTime.Today > Model.From.Date) ? "past" : "future")">
+                    @Model.From.Date.ToString("MM-dd-yyyy")
+                </span>
+                &nbsp;&nbsp;Ends
+                <span class="badge @((DateTime.Today > Model.To.Date) ? "past" : "future")">
+                    @Model.To.Date.ToString("MM-dd-yyyy")
+                </span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Status
+                @if (DateTime.Today < Model.From.Date)
+                {
+                    <span class="badge">Not Started Yet</span>
+                }
+                else if (DateTime.Today >= Model.From.Date && DateTime.Today < Model.To.Date)
+                {
+                    <span class="badge future">In Progress</span>
+                }
+                else if (DateTime.Today >= Model.To.Date)
+                {
+                    <span class="badge past">Ended</span>
+                }
+            </div>
+            <div class="col-sm-6 courses-actions">
+                @if (Model.UserIsCourseInstructor && !courseHasEnded)
+                {
+                    <button type="button" onclick="location.href='@Url.Action("Edit", "Courses", new { @id = Model.CourseId })'" class="btn btn-primary btn-md">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
+                    </button>
+                }
+
+                @if (!Model.UserIsCourseAttender && !Model.UserIsCourseInstructor)
+                {
+                    <button type="button" data-course-attend data-course-id="@Model.CourseId" class="btn btn-info btn-md @(Model.IsCancelled ? "disabled" : "")" title="Click to attend">
+                        <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span><span class="icon-text"> I'm not attending</span>
+                    </button>
+                }
+                else if (Model.UserIsCourseAttender && !Model.UserIsCourseInstructor)
+                {
+                    <button type="button" data-course-unattend data-course-id="@Model.CourseId" class="btn btn-success btn-md @(Model.IsCancelled ? "disabled" : "")" title="Click to unattend">
+                        <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span><span class="icon-text"> I'm attending</span>
+                    </button>
+                }
+            </div>
+        </div>
+    </article>
+</div>
+
+@*<div class="container-fluid row user-courses-row">
+    <article>
+        <div class="row course-title">
+            <div class="col-sm-12">
+                <span>@Model.Title</span>
+            </div>
+        </div>
+        <div class="row course-body">
+            <div class="col-sm-8 course-description">
+                <span>
+                    @Model.Description
+                </span>
+            </div>
+            <div class="col-sm-4 course-dates">
+                <div class="col-sm-6 course-from-date">
+                    @{
+                        Html.RenderPartial("DatePreviewAsCalendar", Model.From);
+                    }
+                </div>
+                <div class="col-sm-6 course-to-date">
+                    @{
+                        Html.RenderPartial("DatePreviewAsCalendar", Model.To);
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="row course-footer">
+            <div class="col-sm-6 course-status">
+                @if (DateTime.Today < Model.From.Date)
+            {
+                    <span class="label label-default course-status-span">Not Started Yet</span>
+                }
+                else if (DateTime.Today >= Model.From.Date && DateTime.Today < Model.To.Date)
+                {
+                    <span class="label label-success course-status-span">In Progress</span>
+                }
+                else if (DateTime.Today >= Model.To.Date)
+                {
+                    <span class="label label-danger course-status-span">Ended</span>
+                }
+            </div>
+            <div class="col-sm-6 course-actions">
+                @if (Model.UserIsCourseInstructor)
+            {
+                    <button type="button" onclick="location.href='@Url.Action("Edit", "Courses", new { @id = Model.CourseId })'" class="btn btn-primary btn-md">
+                        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span> Edit
+                    </button>
+                }
+
+                @if (!Model.UserIsCourseAttender && !Model.UserIsCourseInstructor)
+            {
+                    <button type="button" data-course-attend data-course-id="@Model.CourseId" class="btn btn-info btn-md @(Model.IsCancelled ? "disabled" : "")" title="Click to attend">
+                        <span class="glyphicon glyphicon-remove-circle" aria-hidden="true"></span><span class="icon-text"> Not Attending</span>
+                    </button>
+                }
+                else if (Model.UserIsCourseAttender && !Model.UserIsCourseInstructor)
+                {
+                    <button type="button" data-course-unattend data-course-id="@Model.CourseId" class="btn btn-success btn-md @(Model.IsCancelled ? "disabled" : "")" title="Click to unattend">
+                        <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span><span class="icon-text"> Attending</span>
+                    </button>
+                }
+            </div>
+        </div>
+    </article>
+</div>*@
+

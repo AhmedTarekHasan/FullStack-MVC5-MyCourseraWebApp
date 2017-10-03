@@ -1,0 +1,63 @@
+﻿@model MyCourseraWebApp.ViewModel.CourseDetailsViewModel
+
+@{
+    ViewBag.Title = "Create Course";
+}
+
+@using (Html.BeginForm("Create", "Courses", FormMethod.Post, new { @class = "form-vertical", role = "form" }))
+{
+    @Html.AntiForgeryToken();
+
+    <div class="create-course-form">
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(m => m.Title, new { @class = "control-label" })
+                    @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+                    <h4>@Html.ValidationMessageFor(m => m.Title, "", new { @class = "label label-danger" })</h4>
+                </div>
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(m => m.Description, new { @class = "control-label" })
+                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                    <h4>@Html.ValidationMessageFor(m => m.Description, "", new { @class = "label label-danger" })</h4>
+                </div>
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(m => m.From, new { @class = "control-label" })
+                    @Html.TextBoxFor(m => m.From, "{0:yyyy-MM-dd}", new { @class = "form-control jqueryui-marker-datepicker date-picker", @readonly = "" })
+                    <h4>@Html.ValidationMessageFor(m => m.From, "", new { @class = "label label-danger" })</h4>
+                </div>
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(m => m.To, new { @class = "control-label" })
+                    @Html.TextBoxFor(m => m.To, "{0:yyyy-MM-dd}", new { @class = "form-control jqueryui-marker-datepicker date-picker", @readonly = "" })
+                    <h4>@Html.ValidationMessageFor(m => m.To, "", new { @class = "label label-danger" })</h4>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group col-md-12">
+                    <div class="pull-right">
+                        <input type="button" value="Cancel" onclick="location.href='@Url.Action("Index", "Courses")'" class="btn btn-default" />
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            coursesController.bindCancelButton(function () {
+                location.href = "@Url.Action("Index", "Courses")";
+            }, function (xhr, err) {
+                alert("readyState: " + xhr.readyState + "\nstatus: " + xhr.status);
+                alert("responseText: " + xhr.responseText);
+            });
+
+            coursesController.bindDatePickerControls();
+        });
+    </script>
+}

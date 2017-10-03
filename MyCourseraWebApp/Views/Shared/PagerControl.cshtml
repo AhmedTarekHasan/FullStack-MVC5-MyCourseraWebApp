@@ -1,0 +1,37 @@
+﻿@using MyCourseraWebApp.Helpers
+@using CommonUtilities
+
+@model PagerToken
+
+@{
+    var pagerWidth = ContextHelpers.DefaultPagerWidth;
+    var lastPageNumber = Math.Min(pagerWidth * ((Model.ActualPageNumber - 1) / pagerWidth) + pagerWidth, Model.TotalNumberOfPages);
+    var firstPageNumber = Math.Max(pagerWidth * ((Model.ActualPageNumber - 1) / pagerWidth) + 1, 1);
+
+    var disablePreviousArrow = (firstPageNumber == 1);
+    var disableNextArrow = (lastPageNumber >= Model.TotalNumberOfPages);
+
+    var nextBatchFirstPage = Math.Max(pagerWidth * ((lastPageNumber) / pagerWidth) + 1, 1);
+    var previousBatchLastPage = Math.Min(pagerWidth * ((firstPageNumber - 2) / pagerWidth) + pagerWidth, Model.TotalNumberOfPages);
+}
+
+<div class="row system-pager">
+    <div class="col-md-12">
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end pager-container">
+                <li class="page-item @(disablePreviousArrow ? "disabled" : "")" data-pager-previous="@previousBatchLastPage">
+                    <a class="page-link" href="#">Previous</a>
+                </li>
+
+                @for (int i = firstPageNumber; i <= lastPageNumber; i++)
+                {
+                    <li data-pager-page-anchor="@i" class="page-item @((Model.ActualPageNumber == i) ? "active" : "") @((Model.TotalNumberOfPages < i) ? "disabled" : "")"><a class="page-link" href="#">@i</a></li>
+                }
+
+                <li class="page-item @(disableNextArrow ? "disabled" : "")" data-pager-next="@nextBatchFirstPage">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

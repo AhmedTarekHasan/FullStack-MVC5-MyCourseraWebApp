@@ -1,0 +1,90 @@
+﻿@model MyCourseraWebApp.ViewModel.CourseDetailsViewModel
+
+@{
+    ViewBag.Title = "Edit Course";
+    var courseHasEnded = (Model.To.Value.Date <= DateTime.Today);
+}
+
+@using (Html.BeginForm("Edit", "Courses", FormMethod.Post, new { @class = "form-vertical", role = "form" }))
+{
+    @Html.AntiForgeryToken();
+
+    <div class="edit-course-form">
+        @Html.HiddenFor(m => m.Id)
+
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group col-md-12">
+                    @Html.LabelFor(m => m.Title, new { @class = "control-label" })
+                    @Html.TextBoxFor(m => m.Title, new { @class = "form-control readonly", @readonly = "" })
+                    <h4>@Html.ValidationMessageFor(m => m.Title, "", new { @class = "label label-danger" })</h4>
+                </div>
+
+                @if (!courseHasEnded)
+                {
+                    <div class="form-group col-md-12">
+                        @Html.LabelFor(m => m.Description, new { @class = "control-label" })
+                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
+                        <h4>@Html.ValidationMessageFor(m => m.Description, "", new { @class = "label label-danger" })</h4>
+                    </div>
+                    <div class="form-group col-md-12">
+                        @Html.LabelFor(m => m.From, new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.From, "{0:yyyy-MM-dd}", new { @class = "form-control jqueryui-marker-datepicker date-picker", @readonly = "" })
+                        <h4>@Html.ValidationMessageFor(m => m.From, "", new { @class = "label label-danger" })</h4>
+                    </div>
+                    <div class="form-group col-md-12">
+                        @Html.LabelFor(m => m.To, new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.To, "{0:yyyy-MM-dd}", new { @class = "form-control jqueryui-marker-datepicker date-picker", @readonly = "" })
+                        <h4>@Html.ValidationMessageFor(m => m.To, "", new { @class = "label label-danger" })</h4>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group col-md-12">
+                        @Html.LabelFor(m => m.Description, new { @class = "control-label" })
+                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @disabled = "true" })
+                        <h4>@Html.ValidationMessageFor(m => m.Description, "", new { @class = "label label-danger" })</h4>
+                    </div>
+                    <div class="form-group col-md-12">
+                        @Html.LabelFor(m => m.From, new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.From, "{0:yyyy-MM-dd}", new { @class = "form-control jqueryui-marker-datepicker date-picker", @readonly = "", @disabled = "true" })
+                        <h4>@Html.ValidationMessageFor(m => m.From, "", new { @class = "label label-danger" })</h4>
+                    </div>
+                    <div class="form-group col-md-12">
+                        @Html.LabelFor(m => m.To, new { @class = "control-label" })
+                        @Html.TextBoxFor(m => m.To, "{0:yyyy-MM-dd}", new { @class = "form-control jqueryui-marker-datepicker date-picker", @readonly = "", @disabled = "true" })
+                        <h4>@Html.ValidationMessageFor(m => m.To, "", new { @class = "label label-danger" })</h4>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group col-md-12">
+                    <div class="pull-right">
+                        <input type="button" value="Cancel" onclick="location.href='@Url.Action("Index", "Courses")'" class="btn btn-default" />
+                        <input type="button" data-cancel-course="@Model.Id" value="Cancel Course" class="btn btn-danger" @(courseHasEnded ? "disabled" : "") />
+                        <input type="submit" value="Save Changes" class="btn btn-primary" @(courseHasEnded ? "disabled" : "") />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            coursesController.bindCancelButton(function () {
+                location.href = "@Url.Action("Index", "Courses")";
+            }, function (xhr, err) {
+                alert("readyState: " + xhr.readyState + "\nstatus: " + xhr.status);
+                alert("responseText: " + xhr.responseText);
+            });
+
+            coursesController.bindDatePickerControls();
+        });
+    </script>
+}

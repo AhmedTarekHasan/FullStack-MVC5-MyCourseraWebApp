@@ -1,0 +1,35 @@
+﻿@model MyCourseraWebApp.ViewModel.ViewUserCoursesViewModel
+
+@{
+    ViewBag.Title = "Courses";
+    ViewBag.Summary = "These are all the courses we have";
+}
+
+@section HeaderContent
+{
+    <div class="courses-page-index-search-main-container">
+        @{
+            Html.RenderPartial("CoursesSearchControl", Model);
+        }
+    </div>
+}
+
+<div class="container-fluid user-courses-main-container courses-page-items courses-page-index-items">
+    @{
+        Html.RenderPartial("UserCourses", Model);
+    }
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            coursesController.searchConrolsMainContainerSelector = ".courses-page-index-search-main-container";
+            coursesController.bindingMode = 1;
+            coursesController.bindPagerButtons();
+            coursesController.bindAttendActionButtons();
+            coursesController.bindUnAttendActionButtons();
+            coursesController.bindSearchControls();
+        });
+    </script>
+}
