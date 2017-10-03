@@ -27,7 +27,7 @@
 <br/>
 
 ### SignalR:
-*	Implementing a fully-fledged notification module.
+*	Implementing a fully-fledged notification module
 
 <br/>
 
